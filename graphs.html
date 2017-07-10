@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Graph test</title>
+	<script type="text/javascript" src="/node_modules/vis/dist/vis.min.js"></script>
+	<script type="text/javascript" src="/node_modules/vis/dist/vis-network.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/node_modules/vis/dist/vis.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/node_modules/vis/dist/vis-network.min.css"/>
+
+	<!-- <link rel="icon" sizes="192x192" href="https://material.io/static/images/simple-lp/favicons/components-192x192.png">
+	<link rel="shortcut icon" href="https://material.io/static/images/simple-lp/favicons/components-72x72.png">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="https://unpkg.com/material-components-web@0.9.1/dist/material-components-web.min.css"> -->
+
+</head>
+<body>
+<style media="screen">
+html, body {
+	height: 100%;
+	background-color: #f2f2f2;
+	font-family: sans-serif;
+}
+
+#network {
+	width: 100%;
+	height: 80%;
+	border: solid 1px black;
+	background-color: #ffffff;
+}
+</style>
+<h1 class="">ss-competition</h1>
+<div id="network"></div>
+
+<script type="text/javascript">
+	const states = [
+		{id: 3, group: 1, label: 'root', title: '/' },
+		{id: 1, group: 4, label: 'forbidden', title: '/forbidden' },
+		{id: 2, group: 4, label: '404', title: '/404' },
+		{id: 4, group: 1, label: 'userDashboard', title: '/my-somosport' },
+		{id: 8, group: 4, label: 'reset_password', title: '/reset_password/username/:username/rq_token/:token' },
+		// {id: , group: 99, label: 'competition', title: '/competition' },
+		// {id: , group: 99, label: 'competition.new', title: '/competition/new' },
+		// {id: , group: 99, label: 'competition.edit', title: '/:competitionId' },
+		{id: 7, group: 2, label: 'umbrella', title: '/:competitionId}' },
+		{id: 9, group: 2, label: 'umbrella.season_schedule', title: '/season/:seasonId/schedule' },
+		{id: 10, group: 2, label: 'umbrella.season_standings', title: '/season/:seasonId/standings' },
+		// {id: , group: 2, label: 'umbrella.contact', title: '/season/:seasonId/category/:categoryId/contact' },
+		// {id: , group: 2, label: 'umbrella.home', title: '/season/:seasonId/category/:categoryId/home' },
+		{id: 13, group: 2, label: 'umbrella.about', title: '/season/:seasonId/category/:categoryId/about' },
+		{id: 14, group: 2, label: 'umbrella.teams', title: '/season/:seasonId/category/:categoryId/teams' },
+		{id: 15, group: 2, label: 'umbrella.matchReport', title: '/season/:seasonId/category/:categoryId/match/:matchId/report' },
+		//sin uso
+		// {id: 23, group: 2, label: 'umbrella.category_matches', title: '/season/:seasonId/category/:categoryId/group/:groupId/matches' },
+		{id: 17, group: 2, label: 'umbrella.teams.teamProfile', title: '/:teamId' },
+		//sin uso
+		// {id: , group: 2, label: 'umbrella.playerProfile', title: '/season/:seasonId/category/:categoryId/player/:playerId' },
+		{id: 19, group: 2, label: 'umbrella.schedule', title: '/season/:seasonId/category/:categoryId/schedule' },
+		{id: 20, group: 2, label: 'umbrella.standings', title: '/season/:seasonId/category/:categoryId/standings' },
+		{id: 21, group: 2, label: 'umbrella.statistics', title: '/season/:seasonId/category/:categoryId/statistics' },
+		{id: 16, group: 3, label: 'matchReport', title: '/match/:matchId/report' },
+		// {id: , group: 4, label: 'user', title: '/user/:userId' },
+		// {id: , group: 5, label: 'team', title: '/team/:teamId' },
+	]
+
+	const nodes = new vis.DataSet(states)
+
+	// create an array with edges
+	var edges = new vis.DataSet([
+		{from: 3, to: 4},
+		{from: 4, to: 7},
+		{from: 7, to: 9},
+		{from: 7, to: 10},
+		{from: 7, to: 13},
+		{from: 7, to: 19},
+		{from: 7, to: 20},
+		{from: 19, to: 15},
+		{from: 19, to: 17},
+		{from: 10, to: 17},
+		{from: 13, to: 14},
+		{from: 13, to: 15},
+		{from: 13, to: 19},
+		{from: 13, to: 20},
+		{from: 13, to: 21},
+	]);
+
+	var container = document.getElementById('network');
+
+	var data = {
+		nodes: nodes,
+		edges: edges
+	}
+
+	var options = {
+		nodes: {
+			shape: 'dot',
+			size: 30,
+			font: {
+				size: 15
+			},
+			borderWidth: 1,
+			shadow: true
+		}
+		,edges: {
+			width: 1,
+			shadow:true
+		}
+		,layout: {
+			//  hierarchical: {
+			// 	 direction: 'LR'
+			//  }
+		 }
+		 ,interaction: {
+			tooltipDelay: 200
+			// ,zoomView: false
+			// ,dragNodes: false
+			// ,dragView: false
+		 }
+	 };
+
+	 var network = new vis.Network(container, data, options);
+
+	 network.on("showPopup", function (params) {
+		 console.log('showing popup', params);
+		 document.getElementById('eventSpan').innerHTML = '<h2>showPopup event: </h2>' + JSON.stringify(params, null, 4);
+	 });
+
+	 network.on("hidePopup", function () {
+		//  console.log('hidePopup Event');
+	 });
+
+</script>
+
+</body>
+</html>
